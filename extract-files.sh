@@ -1,3 +1,4 @@
+
 #!/bin/bash
 #
 # Copyright (C) 2019 The LineageOS Project
@@ -17,14 +18,50 @@
 
 set -e
 
-export DEVICE=cactus
-export DEVICE_COMMON=mt6765-common
-export VENDOR=xiaomi
+DEVICE=RMX2020
+VENDOR=realme
 
-export DEVICE_BRINGUP_YEAR=2019
+# Load extract_utils and do some sanity checks
+MY_DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "${MY_DIR}" ]]; then MY_DIR="${PWD}"; fi
 
-./"../../${VENDOR}/${DEVICE_COMMON}/extract-files.sh" $@
+AOSP_ROOT="${MY_DIR}/../../.."
 
-BLOB_ROOT="${LINEAGE_ROOT}/vendor/${VENDOR}/${DEVICE}/proprietary"
+HELPER="${AOSP_ROOT}/vendor/aosp/build/tools/extract_utils.sh"
+if [ ! -f "${HELPER}" ]; then
+    echo "Unable to find helper script at ${HELPER}"
+    exit 1
+fi
+source "${HELPER}"
 
-sed -i 's/AT+EAIC=2/AT+EAIC=3/g' "${BLOB_ROOT}/lib/libmtk-ril.so"
+# Default to sanitizing the vendor folder before extraction
+CLEAN_VENDOR=true
+SECTION=
+KANG=
+
+while [ "$1" != "" ]; do
+    case "$1" in
+        -n | --no-cleanup )     CLEAN_VENDOR=false
+                                ;;
+        -k | --kang)            KANG="--kang"
+                                ;;
+        -s | --section )        shift
+                                SECTION="$1"
+                                CLEAN_VENDOR=false
+                                ;;
+        * )                     SRC="$1"
+                                ;;
+    esac
+    shift
+done
+
+if [ -z "${SRC}" ]; then
+    SRC=adb
+fi
+
+# Initialize the helper
+setup_vendor "${DEVICE}" "${VENDOR}" "${AOSP_ROOT}" false "${CLEAN_VENDOR}"
+
+extract "${MY_DIR}/proprietary-files.txt" "${SRC}" "${KANG}" --section "${SECTION}"
+
+"${MY_DIR}/setup-makefiles.sh"
