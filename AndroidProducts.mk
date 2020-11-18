@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/realme/RMX1821
+LOCAL_PATH := device/realme/RMX2020
 
 PRODUCT_MAKEFILES := \
     $(LOCAL_DIR)/lineage_RMX2020.mk

@@ -23,7 +23,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
 
 # Inherit from Realme RMX2020
-$(call inherit-product, device/realme/RMX1821/device.mk)
+$(call inherit-product, device/realme/RMX2020/device.mk)
 
 PRODUCT_BRAND := realme
 PRODUCT_DEVICE := RMX2020

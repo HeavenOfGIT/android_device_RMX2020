@@ -44,7 +44,7 @@ PRODUCT_SOONG_NAMESPACES += \
 	
 # Lights
 PRODUCT_PACKAGES += \
-    android.hardware.light@2.0-service.RMX1821
+    android.hardware.light@2.0-service.RMX2020
 	
 # Init
 PRODUCT_PACKAGES += \
@@ -61,7 +61,7 @@ PRODUCT_PACKAGES += \
 
 # Fingerprint
 PRODUCT_PACKAGES += \
-    android.hardware.biometrics.fingerprint@2.1-service.RMX1821
+    android.hardware.biometrics.fingerprint@2.1-service.RMX2020
 
 # Telephony Jars
 PRODUCT_BOOT_JARS += \
